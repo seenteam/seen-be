@@ -10,7 +10,7 @@ class Mutations::DeletePost < Mutations::BaseMutation
     user = User.find(post.user_id)
     if post.destroy
       {
-        message: "Post deleted",
+        message: "Post Deleted!",
         user: user,
         errors: []
       }
