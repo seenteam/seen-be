@@ -33,6 +33,26 @@ module Types
     def following(id:)
       Follower.where('friend_id = ?', id).map(&:user)
     end
-    
+
+    field :followers, [Types::FollowerType], null: false
+    def followers
+      Follower.all
+    end
+
+    field :follower, Types::FollowerType, null: false do
+      argument :id, ID, required: true
+    end
+
+    def follower(id:)
+      Follower.find(id)
+    end
+
+    field :users_followers, [Types::UserType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def users_followers(id:)
+      Follower.where('user_id = ?', id).map(&:user)
+    end
   end
 end
