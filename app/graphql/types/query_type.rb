@@ -44,15 +44,8 @@ module Types
     end
 
     def users_followers(id:)
-      # binding.pry
       Follower.where('user_id = ?', id).map(&:user)
     end
-
-    # def followers_data(id:)
-    #   User.find(users_followers(id:).friend_id.each do |follower|
-    #     follower)
-    #   end
-    # end
 
   end
 end
