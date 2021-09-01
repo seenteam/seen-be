@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :followers, dependent: :destroy
 
   validates :first_name, :last_name, :birthday, presence: true
   validates :email, :user_name, uniqueness: true, presence: true
