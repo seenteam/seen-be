@@ -26,5 +26,13 @@ module Types
       Post.find(id)
     end
 
+    field :following, [Types::UserType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def following(id:)
+      Follower.where('friend_id = ?', id).map(&:user)
+    end
+    
   end
 end
