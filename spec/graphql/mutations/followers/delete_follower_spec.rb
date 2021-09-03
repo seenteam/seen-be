@@ -51,7 +51,6 @@ RSpec.describe 'delete_follower', type: :request do
           }
       }
       GQL
-
       post graphql_path, params: { query: string }
       json_response = JSON.parse(@response.body, symbolize_names: true)
 
