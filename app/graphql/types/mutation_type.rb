@@ -8,5 +8,7 @@ module Types
     field :delete_post, mutation: Mutations::DeletePost
     field :create_follower, mutation: Mutations::CreateFollower
     field :delete_follower, mutation: Mutations::DeleteFollower
+    field :create_like, mutation: Mutations::CreateLike
+    field :delete_like, mutation: Mutations::DeleteLike
   end
 end
