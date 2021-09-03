@@ -4,6 +4,7 @@ RSpec.describe User, type: :model do
   describe 'relationships' do
     it { should have_many(:posts) }
     it { should have_many(:likes) }
+    it { should have_many(:followers) }
   end
 
   describe 'validations' do
