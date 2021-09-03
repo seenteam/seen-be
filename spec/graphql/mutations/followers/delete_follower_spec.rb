@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe 'delete_post', type: :request do
-  describe 'mutation: deletePost' do
+RSpec.describe 'delete_follower', type: :request do
+  describe 'mutation: deleteFollower' do
     it 'deletes a post' do
       user = create(:user)
       follower = create(:user)
