@@ -29,10 +29,9 @@ RSpec.describe FluxFollower, type: :model do
           create(:user)
         end
 
-        user1 = User.first
-
         FluxFollower.distribute
-        # require 'pry'; binding.pry
+        first_id = FluxFollower.first.user_id
+        user1 = User.find(first_id)
 
         expect(user1.flux_friends.count).to eq(8)
       end
