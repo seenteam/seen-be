@@ -43,7 +43,8 @@ RSpec.describe 'delete_follower', type: :request do
       string = <<~GQL
         mutation {
           deleteFollower(input: {
-            connectionId: "#{follower_id.to_i}"
+            userId: "#{user.id}"
+            followerId: "#{follower.id}"
           }) {
             message
           }
