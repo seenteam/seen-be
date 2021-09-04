@@ -44,5 +44,37 @@ RSpec.describe 'create_user', type: :request do
         expect(value.class).to eq(String)
       end
     end
+
+    it 'sad path cannot create a user' do
+      string = <<~GQL
+        mutation {
+          createUser(input: {
+            firstName: "Chris",
+            lastName: "Bacon",
+            phoneNumber: "123-123-1234",
+            email: "example@example.com",
+            birthday: "2013-07-16"
+          }) {
+            user {
+              id
+              userName
+              firstName
+              lastName
+              email
+              phoneNumber
+              birthday
+            }
+          }
+        }
+      GQL
+
+      post graphql_path, params: { query: string }
+      json_response = JSON.parse(@response.body, symbolize_names: true)
+  
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:message)
+      expect(json_response[:errors][0][:message]).to eq("Argument 'userName' on InputObject 'CreateUserInput' is required. Expected type String!")
+    end
+
   end
 end
