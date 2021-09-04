@@ -30,17 +30,15 @@ RSpec.describe 'delete_follower', type: :request do
                 phoneNumber
                 birthday
           		}
-              follower{
-                id
-          		}
+              errors
+              followerId
             }
       }
       GQL
 
       post graphql_path, params: { query: connection }
       json_response1 = JSON.parse(@response.body, symbolize_names: true)
-
-      follower_id = json_response1[:data][:createFollower][:follower][:id]
+      follower_id = json_response1[:data][:createFollower][:followerId]
 
       string = <<~GQL
         mutation {
@@ -53,7 +51,6 @@ RSpec.describe 'delete_follower', type: :request do
       GQL
       post graphql_path, params: { query: string }
       json_response = JSON.parse(@response.body, symbolize_names: true)
-
       expect(json_response).to have_key(:data)
       expect(json_response[:data]).to have_key(:deleteFollower)
       expect(json_response[:data][:deleteFollower]).to have_key(:message)
