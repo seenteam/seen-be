@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
     it { should have_many(:posts) }
     it { should have_many(:likes) }
     it { should have_many(:followers) }
+    it { should have_many(:flux_followers) }
   end
 
   describe 'validations' do
@@ -16,5 +17,11 @@ RSpec.describe User, type: :model do
     # it { should validate_numericality_of(:phone_number) } # need to fix this
     it { should validate_uniqueness_of(:user_name) }
     it { should validate_uniqueness_of(:email) }
+  end
+
+  describe 'class methods' do
+    describe '.distribute' do
+
+    end
   end
 end

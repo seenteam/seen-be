@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :followers, dependent: :destroy
   has_many :friends, through: :followers, foreign_key: :friend_id
+  has_many :flux_followers, dependent: :destroy
+  has_many :flux_friends, through: :flux_followers, foreign_key: :flux_friend_id
 
   validates :first_name, :last_name, :birthday, presence: true
   validates :email, :user_name, uniqueness: true, presence: true
