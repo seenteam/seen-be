@@ -26,11 +26,11 @@ module Types
       Post.find(id)
     end
 
-    field :following, [Types::UserType], null: false do
+    field :user_following, [Types::UserType], null: false do
       argument :id, ID, required: true
     end
 
-    def following(id:)
+    def user_following(id:)
       Follower.where('friend_id = ?', id).map(&:user)
     end
 
@@ -52,7 +52,10 @@ module Types
     end
 
     def users_followers(id:)
-      Follower.where('user_id = ?', id).map(&:user)
+      user = User.find(id)
+      user.followers.map do |follower|
+        User.find(follower.friend_id)
+      end
     end
   end
 end
