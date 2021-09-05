@@ -26,6 +26,26 @@ module Types
       Post.find(id)
     end
 
+    field :post_likes, [Types::UserType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def post_likes(id:)
+      Like.where('post_id = ?', id).map do |like|
+        User.find(like.user_id)
+      end
+    end
+
+    field :users_liked_posts, [Types::UserType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def users_liked_posts(id:)
+      Like.where('user_id = ?', id).map do |like|
+        Post.find(like.post_id)
+      end
+    end
+
     field :user_following, [Types::UserType], null: false do
       argument :id, ID, required: true
     end

@@ -8,7 +8,6 @@ class Mutations::DeleteFollower < Mutations::BaseMutation
 
   def resolve(user_id:, follower_id:)
     connection = Follower.where("user_id = ?", user_id).where("friend_id = ?", follower_id)
-    # binding.pry
     if connection.first.destroy
       {
         message: "Your connection has been deleted!",
