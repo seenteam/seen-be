@@ -77,5 +77,25 @@ module Types
         User.find(follower.friend_id)
       end
     end
+
+    field :user_flux_following, [Types::UserType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def user_flux_following(id:)
+      FluxFollower.where('flux_friend_id = ?', id).map(&:user)
+    end
+
+    field :users_flux_followers, [Types::UserType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def users_flux_followers(id:)
+      user = User.find(id)
+      user.flux_followers.map do |follower|
+        User.find(follower.flux_friend_id)
+      end
+    end
+
   end
 end
