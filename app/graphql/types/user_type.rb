@@ -11,5 +11,6 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :posts, [Types::PostType], null: true
     field :followers, [Types::FollowerType], null: true
+    field :likes, [Types::LikeType], null: true
   end
 end
