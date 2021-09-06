@@ -32,7 +32,8 @@ RSpec.describe 'delete_like', type: :request do
       string = <<~GQL
         mutation {
           deleteLike(input: {
-            likeId: "#{like_id.to_i}"
+            userId: "#{user.id}"
+            postId: "#{post.id}"
           }) {
               message
             }
