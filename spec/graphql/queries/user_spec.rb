@@ -20,7 +20,7 @@ RSpec.describe 'users', type: :request do
 
       post graphql_path, params: { query: string }
       json_response = JSON.parse(@response.body, symbolize_names: true)
-      # binding.pry
+    
       expect(json_response).to have_key(:data)
       expect(json_response[:data][:users]).to be_an Array
       expect(json_response[:data][:users].count).to eq(5)
@@ -51,7 +51,7 @@ RSpec.describe 'users', type: :request do
 
       post graphql_path, params: { query: string }
       json_response = JSON.parse(@response.body, symbolize_names: true)
-      # binding.pry
+
       expect(json_response).to have_key(:data)
       expect(json_response[:data][:user]).to have_key(:id)
       expect(json_response[:data][:user]).to have_key(:userName)
