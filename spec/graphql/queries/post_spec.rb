@@ -57,18 +57,18 @@ RSpec.describe 'post', type: :request do
     describe 'query: posts' do
       before :each do
         user = create(:user)
-        user1 = create(:user)
-        user2 = create(:user)
-        user3 = create(:user)
-        user4 = create(:user)
+        @user1 = create(:user)
+        @user2 = create(:user)
+        @user3 = create(:user)
+        @user4 = create(:user)
 
-        post_id = user.posts.create(content: Faker::ChuckNorris.fact).id
+        @post_id = user.posts.create(content: Faker::ChuckNorris.fact).id
 
         string = <<~GQL
         mutation {
                     createLike(input: {
-                    userId: "#{user1.id}"
-                    postId: "#{post_id}"
+                    userId: "#{@user1.id}"
+                    postId: "#{@post_id}"
                               }) {
                     like {
                       id
@@ -90,8 +90,8 @@ RSpec.describe 'post', type: :request do
         string2 = <<~GQL
         mutation {
                     createLike(input: {
-                    userId: "#{user1.id}"
-                    postId: "#{post_id}"
+                    userId: "#{@user2.id}"
+                    postId: "#{@post_id}"
                               }) {
                     like {
                       id
@@ -113,8 +113,8 @@ RSpec.describe 'post', type: :request do
         string3 = <<~GQL
         mutation {
                     createLike(input: {
-                    userId: "#{user3.id}"
-                    postId: "#{post_id}"
+                    userId: "#{@user3.id}"
+                    postId: "#{@post_id}"
                               }) {
                     like {
                       id
@@ -136,8 +136,8 @@ RSpec.describe 'post', type: :request do
         string4 = <<~GQL
         mutation {
                     createLike(input: {
-                    userId: "#{user4.id}"
-                    postId: "#{post_id}"
+                    userId: "#{@user4.id}"
+                    postId: "#{@post_id}"
                               }) {
                     like {
                       id
@@ -158,7 +158,7 @@ RSpec.describe 'post', type: :request do
 
         string5 = <<~GQL
         query {
-                postLikes(id: "#{post_id}"){
+                postLikes(id: "#{@post_id}"){
                   id
                   userName
                   firstName
@@ -169,6 +169,17 @@ RSpec.describe 'post', type: :request do
 
         post graphql_path, params: { query: string5 }
         @json_response5 = JSON.parse(@response.body, symbolize_names: true)
+
+        string6 = <<~GQL
+        query {
+                usersLikedPosts(id: #{@user1.id}){
+                  id
+              	}
+              }
+        GQL
+
+        post graphql_path, params: { query: string6 }
+        @json_response6 = JSON.parse(@response.body, symbolize_names: true)
       end
 
       it 'can see how many likes a post has' do
@@ -180,6 +191,20 @@ RSpec.describe 'post', type: :request do
         expect(@json_response5[:data][:postLikes].first).to have_key(:userName)
         expect(@json_response5[:data][:postLikes].first).to have_key(:firstName)
         expect(@json_response5[:data][:postLikes].first).to have_key(:lastName)
+
+        expect(@json_response5[:data][:postLikes][0][:id]).to eq(@user1.id.to_s)
+        expect(@json_response5[:data][:postLikes][1][:id]).to eq(@user2.id.to_s)
+        expect(@json_response5[:data][:postLikes][2][:id]).to eq(@user3.id.to_s)
+        expect(@json_response5[:data][:postLikes][3][:id]).to eq(@user4.id.to_s)
+      end
+
+      it 'can see what posts a user has liked' do
+        expect(@json_response6).to have_key(:data)
+        expect(@json_response6[:data]).to have_key(:usersLikedPosts)
+        expect(@json_response6[:data][:usersLikedPosts]).to be_an Array
+        expect(@json_response6[:data][:usersLikedPosts].count).to eq(1)
+        expect(@json_response6[:data][:usersLikedPosts][0]).to have_key(:id)
+        expect(@json_response6[:data][:usersLikedPosts][0][:id]).to eq(@post_id.to_s)
       end
     end
 
