@@ -18,7 +18,6 @@ RSpec.describe FluxFollower, type: :model do
           user1.flux_friends << user
         end
         FluxFollower.purge
-        FluxFollower.distribute
 
         expect(user1.flux_friends.count).to eq(0)
       end
