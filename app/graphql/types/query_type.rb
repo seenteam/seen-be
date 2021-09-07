@@ -121,10 +121,6 @@ module Types
       argument :id, ID, required: true
     end
 
-    def like_count(id:)
-      Like.select('post_id, sum (post_id)').group('post_id').where('post_id = ?', id)
-    end
-
     field :top_flux, [Types::FluxFollowerType], null: false
 
     def top_flux
@@ -133,7 +129,5 @@ module Types
       .order('count DESC')
       .limit(4)
     end
-
-
   end
 end
