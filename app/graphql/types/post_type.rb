@@ -5,5 +5,7 @@ module Types
     field :content, String, null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :likes, [Types::LikeType], null: true
+    field :user, [Types::UserType], null: true
   end
 end
