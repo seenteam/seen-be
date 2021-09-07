@@ -117,12 +117,7 @@ module Types
       end.flatten
     end
 
-    field :like_count, Integer, null: true do
-      argument :id, ID, required: true
-    end
-
     field :top_flux, [Types::FluxFollowerType], null: false
-
     def top_flux
       FluxFollower.joins(:user).select('users.first_name', 'users.last_name', 'flux_followers.user_id', 'count(flux_followers.flux_friend_id)')
       .group('users.first_name', 'users.last_name', 'flux_followers.user_id')

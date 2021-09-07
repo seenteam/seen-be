@@ -10,4 +10,4 @@ Fixes # (issue)
 
 # How Has This Been Tested?
 
-# If new feature has been added, please descibe.
+# If new feature has been added, please describe.
