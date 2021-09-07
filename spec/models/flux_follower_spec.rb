@@ -22,7 +22,7 @@ RSpec.describe FluxFollower, type: :model do
         expect(user1.flux_friends.count).to eq(0)
       end
     end
-    describe '.purge' do
+    describe '.distribute' do
       it 'deletes all entries on table' do
         10.times do
           create(:user)
