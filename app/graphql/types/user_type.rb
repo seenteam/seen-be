@@ -12,5 +12,6 @@ module Types
     field :posts, [Types::PostType], null: true
     field :followers, [Types::FollowerType], null: true
     field :likes, [Types::LikeType], null: true
+    field :count, Integer, null: false
   end
 end
