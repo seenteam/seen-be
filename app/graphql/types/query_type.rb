@@ -124,6 +124,5 @@ module Types
       .order('count DESC')
       .limit(4)
     end
-
   end
 end
