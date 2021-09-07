@@ -102,9 +102,8 @@ module Types
     end
 
     def get_post_from_fixed_following(id:)
-      user = User.find(id)
-      user.followers.map do |follower|
-        User.find(follower.friend_id).posts
+      Follower.where('friend_id = ?', id).map(&:user).map do |user|
+        user.posts
       end.flatten
     end
 
@@ -113,9 +112,8 @@ module Types
     end
 
     def get_post_from_flux_following(id:)
-      user = User.find(id)
-      user.flux_followers.map do |follower|
-        User.find(follower.flux_friend_id).posts
+      FluxFollower.where('flux_friend_id = ?', id).map(&:user).map do |user|
+        user.posts
       end.flatten
     end
 
@@ -130,7 +128,6 @@ module Types
     field :top_flux, [Types::FluxFollowerType], null: false
 
     def top_flux
-      # binding.pry
       FluxFollower.joins(:user).select('users.first_name', 'users.last_name', 'flux_followers.user_id', 'count(flux_followers.flux_friend_id)')
       .group('users.first_name', 'users.last_name', 'flux_followers.user_id')
       .order('count DESC')

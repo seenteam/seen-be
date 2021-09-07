@@ -3,4 +3,8 @@ class Post < ApplicationRecord
   has_many :likes
 
   validates :user_id, :content, presence: true
+
+  def like_count
+    self.likes.count
+  end
 end
