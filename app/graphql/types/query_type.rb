@@ -97,5 +97,43 @@ module Types
       end
     end
 
+    field :get_post_from_fixed_following, [Types::PostType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def get_post_from_fixed_following(id:)
+      Follower.where('friend_id = ?', id).map(&:user).map do |user|
+        user.posts
+      end.flatten
+    end
+
+    field :get_post_from_flux_following, [Types::PostType], null: false do
+      argument :id, ID, required: true
+    end
+
+    def get_post_from_flux_following(id:)
+      FluxFollower.where('flux_friend_id = ?', id).map(&:user).map do |user|
+        user.posts
+      end.flatten
+    end
+
+    field :like_count, Integer, null: true do
+      argument :id, ID, required: true
+    end
+
+    def like_count(id:)
+      Like.select('post_id, sum (post_id)').group('post_id').where('post_id = ?', id)
+    end
+
+    field :top_flux, [Types::FluxFollowerType], null: false
+
+    def top_flux
+      FluxFollower.joins(:user).select('users.first_name', 'users.last_name', 'flux_followers.user_id', 'count(flux_followers.flux_friend_id)')
+      .group('users.first_name', 'users.last_name', 'flux_followers.user_id')
+      .order('count DESC')
+      .limit(4)
+    end
+
+
   end
 end
