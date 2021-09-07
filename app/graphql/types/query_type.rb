@@ -117,23 +117,13 @@ module Types
       end.flatten
     end
 
-    field :like_count, Integer, null: true do
-      argument :id, ID, required: true
-    end
-
-    def like_count(id:)
-      Like.select('post_id, sum (post_id)').group('post_id').where('post_id = ?', id)
-    end
-
     field :top_flux, [Types::FluxFollowerType], null: false
-
     def top_flux
       FluxFollower.joins(:user).select('users.first_name', 'users.last_name', 'flux_followers.user_id', 'count(flux_followers.flux_friend_id)')
       .group('users.first_name', 'users.last_name', 'flux_followers.user_id')
       .order('count DESC')
       .limit(4)
     end
-
 
   end
 end
